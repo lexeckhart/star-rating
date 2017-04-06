@@ -1,0 +1,9 @@
+/node_modules
+/dist
+/cache
+npm-debug.log
+*.swp
+*.swo
+.DS_Store
+.sass-cache
+.idea
