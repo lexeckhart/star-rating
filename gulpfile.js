@@ -4,10 +4,9 @@
 var gulp         = require("gulp"),
     autoprefixer = require("gulp-autoprefixer"),
     cleanCSS     = require("gulp-clean-css"),
+    jshint       = require('gulp-jshint'),
     concat       = require("gulp-concat"),
-    git          = require("gulp-git"),
     gutil        = require("gulp-util"),
-    jshint       = require("gulp-jshint"),
     rename       = require("gulp-rename"),
     sass         = require("gulp-sass"),
     sassLint     = require("gulp-sass-lint"),
@@ -22,26 +21,55 @@ var DIST_DIR = 'dist';
 var DIST = {
     css:            DIST_DIR + '/css',
     js:             DIST_DIR + '/js',
-    outputCssName:  'star_rating',
-    outputJsName:   'star_rating'
+    demoCssName:    'demo-utilities',
+    outputCssName:  'star-rating',
+    outputJsName:   'star-rating'
 };
-    
-gulp.task('styles', function () {
-    return gulp.src(DATA.styles + '/hub.scss')
-    .pipe(sass().on('error', gutil.log))
-    .pipe(autoprefixer([
-        'Android >= 4',
-        'Chrome >= 30',
-        'Firefox >= 30',
-        'ie >= 9',
-        'iOS >= 7',
-        'Opera >= 12',
-        'Safari >= 6']))
-    .pipe(rename(DIST.outputCssName + '.css'))
-    .pipe(gulp.dest(DIST.css))
-    .pipe(cleanCSS({ zindex: false }))
-    .pipe(rename(DIST.outputCssName + '.min.css'))
-    .pipe(gulp.dest(DIST.css));
+
+var buildStylesheet = function(name, options){
+    gulp.task(name, function () {
+        var stream = gulp.src(DATA.styles + options.sourceFileName)
+        .pipe(sass().on('error', gutil.log))
+        .pipe(autoprefixer([
+            'Android >= 4',
+            'Chrome >= 30',
+            'Firefox >= 30',
+            'ie >= 9',
+            'iOS >= 7',
+            'Opera >= 12',
+            'Safari >= 6']))
+            
+        if (options.isMinified){
+            return stream
+            .pipe(cleanCSS({ zindex: false }))
+            .pipe(rename(options.outputFileName + '.min.css'))
+            .pipe(gulp.dest(DIST.css));
+        } else {
+            return stream
+            .pipe(rename(options.outputFileName + '.css'))
+            .pipe(gulp.dest(DIST.css));
+        }
+    });
+}    
+
+function doStyles(task) {
+    var styleName = task[0] + "_styles";
+    buildStylesheet(styleName, {
+        sourceFileName: task[1],
+        outputFileName: task[2],
+        isMinified:     task[3]
+    });
+    return styleName;
+}
+
+var styleTasks = [
+    //["Task Name",         "Source file name",         "Output file name",         "Is the stylesheet minified?"]
+      ["main",              "/hub.scss",                DIST.outputCssName,         true],
+      ["demo",              "/demo.scss",               DIST.demoCssName,           true]
+].map(doStyles);
+
+gulp.task("styles", styleTasks, function(cb) {
+    cb();
 });
 
 gulp.task('styles:watch', function () {
@@ -62,6 +90,12 @@ gulp.task('scripts', function() {
 
 gulp.task('scripts:watch', function () {
     gulp.watch(['scripts']);
+});
+
+gulp.task('js_lint', function() {
+  return gulp.src(DATA.scripts +'/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter("default"));
 });
 
 gulp.task('default', [ 'styles', 'scripts' ]);
