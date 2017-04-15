@@ -1,0 +1,138 @@
+// Star rating module
+// ------------------------
+
+@function setStars($unicode-item, $stars-number) {
+    $stuff: '';
+    @for $j from 1 through $stars-number {
+        $stuff: $stuff + $unicode-item;
+    }
+    @return $stuff;
+}
+
+// Base styles
+// ------------------------
+
+.star-rating-container {
+    display:block;
+    text-decoration: none!important;
+}
+
+.star-rating-text {
+    display: inline-block;
+    line-height: $star-rating-default;
+    padding-left: 5px;
+}
+
+.star-rating {
+    *, *:before, *:after {
+        box-sizing: border-box;
+    }
+    input[type="radio"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+    display: inline-block;
+    position: relative;
+    white-space: nowrap;
+    vertical-align: middle;
+    position: relative;
+    height: $star-rating-default;
+    line-height: $star-rating-default;
+    font-size: $star-rating-default - $star-rating-inner-padding-vertical * 2;
+    font-family: $star-rating-font-family;
+    color: $star-rating-empty-color;
+    letter-spacing: $star-rating-inner-spacing * 2;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    &:before {
+        position: relative;
+        content: setStars($star-rating-empty-unicode, $star-rating-stars-no);
+    }
+    .star-rating-inner {
+        white-space: nowrap;
+        position: absolute;
+        line-height: inherit;
+        height: inherit;
+        top: 0;
+        left:0;
+        right:0;
+        z-index: 1;
+        overflow:hidden;
+    }
+
+
+    &.star-rating-sm {
+        height: $star-rating-sm;
+        line-height: $star-rating-sm;
+        font-size: 14px;
+        + .star-rating-text {
+            line-height: $star-rating-sm;
+            font-size: 12px;
+        }
+    }
+    &.star-rating-lg {
+        height: $star-rating-lg;
+        line-height: $star-rating-lg;
+        font-size: $star-rating-lg - $star-rating-inner-padding-vertical * 2;
+        + .star-rating-text {
+            line-height: $star-rating-lg;
+        }
+    }
+    &.star-rating-xl {
+        height: $star-rating-xl;
+        line-height: $star-rating-xl;
+        font-size: $star-rating-xl - $star-rating-inner-padding-vertical * 2;
+        + .star-rating-text {
+            line-height: $star-rating-lg;
+            font-size: 18px;
+        }
+    }
+}
+
+.star-rating-input {
+    .star-rating-inner {
+        top: $star-rating-inner-padding-vertical;
+        @include clearfix();
+        > .star-rating-label{
+            float:right;
+        }
+    }
+}
+
+.star-rating-label {
+    // if people want a button instead of a label
+    background-color: transparent; 
+    border: 0;
+    padding: 0;
+    margin: 0;
+    // ----
+    position: relative;
+    letter-spacing: $star-rating-inner-spacing * 2 - 0.01; // yeah. something's broken somewhere in the universe
+    cursor: pointer;
+    outline: none;
+    line-height: 1;
+    font-size: inherit;
+    color: transparent;
+    &:before {
+        content: $star-rating-empty-unicode;
+    }
+    .active,
+    input[type="radio"]:checked ~ &,
+    &:hover, 
+    &:hover ~ & {
+        color: $star-rating-rated-color;
+        &:before { content: $star-rating-rated-unicode; }
+    }
+}
+
+.star-rating-read {
+    .star-rating-inner {
+        &:before {
+            position:relative;
+            content: setStars($star-rating-rated-unicode, $star-rating-stars-no);
+            color: $star-rating-rated-color;
+        }
+    }
+}

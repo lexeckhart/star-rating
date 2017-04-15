@@ -7,11 +7,60 @@
         <meta name="description" content="This is a star rating example, relax!">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="./dist/css/demo-utilities.min.css">
         <link rel="stylesheet" href="./dist/css/star-rating.min.css">
     </head>
     <body>
-        <p>Seems to be working</p>
-        <script src="./dist/js/star-rating.min.js"></script>
+        <div class="container pad-sep-lg">
+            <h1>Star rating</h1>
+            <h2>With input</h2>
+            <hr>
+            <div id="starsWithInputs" class="mrg-sep-md"></div>
+            <div class="well">
+                <p class="caption">Here's how to use it:</p>
+            </div>
+            <h2>Just read</h2>
+            <hr>
+            <div id="starsJustStatic" class="mrg-sep-md"></div>
+            <div class="well">
+                <p class="caption">Here's how to use it:</p>
+            </div>
+        <script type="text/template" id="templateForRatingsWithInputs">
+            <div class="star-rating-container">
+                <div class="star-rating star-rating-input star-rating-{rating_height}">
+                    <div class="star-rating-inner">
+                        <input type="radio" name="{rating_input_name}" data-rating="5" id="{rating_input_name}{id}{rating_height}5"/>
+                        <label class="star-rating-label" for="{rating_input_name}{id}{rating_height}5"></label>
+
+                        <input type="radio" name="{rating_input_name}" data-rating="4" id="{rating_input_name}{id}{rating_height}4"/>
+                        <label class="star-rating-label" for="{rating_input_name}{id}{rating_height}4"></label>
+
+                        <input type="radio" name="{rating_input_name}" data-rating="3" id="{rating_input_name}{id}{rating_height}3"/>
+                        <label class="star-rating-label" for="{rating_input_name}{id}{rating_height}3"></label>
+
+                        <input type="radio" name="{rating_input_name}" data-rating="2" id="{rating_input_name}{id}{rating_height}2"/>
+                        <label class="star-rating-label" for="{rating_input_name}{id}{rating_height}2"></label>
+
+                        <input type="radio" name="{rating_input_name}" data-rating="1" id="{rating_input_name}{id}{rating_height}1"/>
+                        <label class="star-rating-label" for="{rating_input_name}{id}{rating_height}1"></label>
+                    </div>
+                </div>
+                <span class="star-rating-text">{rating_input_text}</span>
+            </div>
+        </script>
+        <script type="text/template" id="templateForRatingOptions">
+            <input type="radio" name="{rating_input_name}" id="{rating_input_name}{id}{rating_height}"/>
+            <label class="fa fa-star" data-rating="5" for="{rating_input_name}{id}{rating_height}"></label>
+        </script>
+        <script type="text/template" id="templateForStaticRatings">
+            <div class="star-rating-container">
+                <div class="star-rating star-rating-read star-rating-xl">
+                    <div class="star-rating-inner" style="width: calc(100% / 5 * {rating_input_value});"></div>
+                </div>  
+                <span class="star-rating-text">Rated: {rating_input_value}</span>                  
+            </div>
+        </script>
+        <script src="./dist/js/star-rating.js"></script>
     </body>
 </html>
