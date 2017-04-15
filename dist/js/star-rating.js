@@ -24,7 +24,7 @@ function selectRating(element) {
     var inputsDemoJson = [
         {
             "id": "0",
-            "form_name": "defaultInputs",
+            "form_name": "standardInputs",
             "rating_stars": 5,
             "rating_height": "xl",
             "rating_has_input": true,
@@ -34,7 +34,7 @@ function selectRating(element) {
         },
         {
             "id": "1",
-            "form_name": "defaultInputs",
+            "form_name": "justReadInputs",
             "rating_stars": 5,
             "rating_height": "xl",
             "rating_has_input": false,
@@ -52,13 +52,15 @@ function selectRating(element) {
     var d;
     inputsDemoJson.forEach(function(rating){
         if(rating.rating_has_input == true){
-            d = document.createElement('form');
-            d.className = rating.form_name;
-            d.classList.add('mrg-sep-xs');
-            d.innerHTML = nano(inputsDemoTemplate, rating);
-            inputsDemoHolder.appendChild(d);
+            // d = document.createElement('form');
+            // d.className = rating.form_name;
+            // d.classList.add('mrg-sep-xs');
+            // d.innerHTML = nano(inputsDemoTemplate, rating);
+            // inputsDemoHolder.appendChild(d);
 
-            selectRating(rating.form_name);
+            inputsDemoHolder.innerHTML += nano(inputsDemoTemplate, rating);
+
+            //selectRating(rating.form_name);
         } else {
             d = document.createElement('div');
             d.className = 'mrg-sep-xs';
