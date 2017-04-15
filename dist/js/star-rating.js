@@ -52,15 +52,13 @@ function selectRating(element) {
     var d;
     inputsDemoJson.forEach(function(rating){
         if(rating.rating_has_input == true){
-            // d = document.createElement('form');
-            // d.className = rating.form_name;
-            // d.classList.add('mrg-sep-xs');
-            // d.innerHTML = nano(inputsDemoTemplate, rating);
-            // inputsDemoHolder.appendChild(d);
-
-            inputsDemoHolder.innerHTML += nano(inputsDemoTemplate, rating);
-
-            //selectRating(rating.form_name);
+            d = document.createElement('form');
+            d.className = rating.form_name;
+            d.classList.add('mrg-sep-xs');
+            d.innerHTML = nano(inputsDemoTemplate, rating);
+            inputsDemoHolder.appendChild(d);
+            
+            selectRating(rating.form_name);
         } else {
             d = document.createElement('div');
             d.className = 'mrg-sep-xs';
